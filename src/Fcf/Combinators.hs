@@ -20,9 +20,11 @@ module Fcf.Combinators
   , Join
   , type (<$>)
   , type (<*>)
+  , Id
   , Flip
   , ConstFn
   , type ($)
+  , On
   ) where
 
 import Fcf.Core
@@ -67,6 +69,9 @@ type instance Eval (f <$> e) = f (Eval e)
 data (<*>) :: Exp (a -> b) -> Exp a -> Exp b
 type instance Eval (f <*> e) = Eval f (Eval e)
 
+data Id :: a -> Exp a
+type instance Eval (Id a) = a
+
 data Flip :: (a -> b -> Exp c) -> b -> a -> Exp c
 type instance Eval (Flip f y x) = Eval (f x y)
 
@@ -79,3 +84,6 @@ data ($) :: (a -> Exp b) -> a -> Exp b
 type instance Eval (($) f a) = Eval (f a)
 
 infixr 0 $
+
+data On ::  (b -> b -> Exp c) -> (a -> Exp b) -> a -> a -> Exp c
+type instance Eval (On g f a b) = Eval (g (Eval (f a)) (Eval (f b)))
