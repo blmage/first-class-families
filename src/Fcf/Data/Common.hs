@@ -13,6 +13,7 @@ module Fcf.Data.Common
   , Fst
   , Snd
   , type (***)
+  , type (&&&)
 
     -- ** Either
 
@@ -46,6 +47,11 @@ infixr 3 ***
 -- | Equivalent to 'Bimap' for pairs.
 data (***) :: (b -> Exp c) -> (b' -> Exp c') -> (b, b') -> Exp (c, c')
 type instance Eval ((***) f f' '(b, b')) = '(Eval (f b), Eval (f' b'))
+
+infixr 3 &&&
+
+data (&&&) :: (b -> Exp c) -> (b -> Exp c') -> b -> Exp (c, c')
+type instance Eval ((&&&) f f' b) = '(Eval (f b), Eval (f' b))
 
 -- ** Either
 
