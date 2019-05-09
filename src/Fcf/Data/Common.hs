@@ -24,6 +24,7 @@ module Fcf.Data.Common
 
   , UnMaybe
   , FromMaybe
+  , FromJust
   , IsNothing
   , IsJust
   ) where
@@ -70,6 +71,9 @@ type instance Eval (UnMaybe y f ('Just x)) = Eval (f x)
 data FromMaybe :: k -> Maybe k -> Exp k
 type instance Eval (FromMaybe a 'Nothing)   = a
 type instance Eval (FromMaybe _a ('Just b)) = b
+
+data FromJust :: Maybe a -> Exp a
+type instance Eval (FromJust ('Just a)) = a
 
 data IsNothing :: Maybe a -> Exp Bool
 type instance Eval (IsNothing ('Just _a)) = 'False
